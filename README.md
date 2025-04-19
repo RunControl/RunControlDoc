@@ -11,6 +11,6 @@ Bu depo, RunControl adlı oyunun dokümantasyonu için oluşturulmuştur. RunCon
   
 - [@enesguzel1](https://github.com/enesguzel1) Enes GÜZEL 
 
-- [@Batuhanbyr](https://github.com/Batuhanbyr)  Mehmet Ali KODAŞ
+- [@mhmale](https://github.com/mhmale)  Mehmet Ali KODAŞ
 
-- [@mhmale](https://github.com/mhmale)  Batuhan Bayır
+- [@Batuhanbyr](https://github.com/Batuhanbyr)  Batuhan Bayır
