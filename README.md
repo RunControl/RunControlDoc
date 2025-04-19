@@ -21,3 +21,8 @@ Bu depo, RunControl adlı oyunun dokümantasyonu için oluşturulmuştur. RunCon
 #### Neden karakter özelleştirmelerinde AR teknolojisini kullanmaya karar verdiniz?
 
 RunControl'de AR teknolojisini tercih ederek oyunculara sıradan bir karakter editöründen çok daha eğlenceli ve kişisel bir deneyim sunmayı hedefledik. Artırılmış Gerçeklik sayesinde oyuncular karakterlerini kendi dünyalarının bir parçası haline getirebiliyor, yaratıcı şekilde konumlandırabiliyor ve bu anları paylaşarak sosyal medyada organik olarak yayılmasını sağlayabiliyor.
+
+> #### Why AR for character customization?
+
+> We implemented AR in RunControl to deliver a next-level personalized experience. Players can now bring their characters into the real world through augmented reality, create fun scenes, and easily share them socially - making character customization more immersive and shareable than ever!
+
