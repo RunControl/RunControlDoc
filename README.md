@@ -13,4 +13,4 @@ Bu depo, RunControl adlı oyunun dokümantasyonu için oluşturulmuştur. RunCon
 
 - [@mhmale](https://github.com/mhmale)  Mehmet Ali KODAŞ
 
-- [@Batuhanbyr](https://github.com/Batuhanbyr)  Batuhan Bayır
+- [@Batuhanbyr](https://github.com/Batuhanbyr)  Batuhan BAYIR
