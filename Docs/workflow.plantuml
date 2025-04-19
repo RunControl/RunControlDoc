@@ -1,0 +1,106 @@
+@startuml RunControl_IşAkışDiyagramı
+title RunControl Oyun Akış Diyagramı
+
+skinparam {
+  defaultFontName Arial
+  defaultFontSize 14
+  ArrowColor #444444
+  ActivityBackgroundColor #F7F7F7
+  ActivityBorderColor #333333
+  ActivityDiamondBackgroundColor #FFFFFF
+  NoteBackgroundColor #FFFFCC
+}
+
+start
+
+:Oyun Başlatıldı;
+note right: Application.Start() tetiklenir
+
+if (İlk Açılış mı?) then (Evet)
+  :Eğitim Modunu Yükle;
+  :PlayerPrefs'ten verileri çek;
+else (Hayır)
+endif
+
+:Ana Menüyü Aç;
+note left
+  **Menü Elementleri:**
+  - Play Butonu
+  - Ayarlar
+  - Çıkış
+end note
+
+repeat
+  :Kullanıcı Girişini Bekle;
+  
+  if (Play Seçildi?) then (Evet)
+    :Seviye Yükleme Ekranı;
+    :Seviye Verilerini Hazırla;
+    
+    fork
+      :Fizik Motorunu Başlat;
+      :Input System'i Aktif Et;
+    fork again
+      :Karakterleri Spawn Et;
+      :UI Controller'ı Hazırla;
+    end fork
+    
+    :Oyun Döngüsünü Başlat;
+    
+    while (Oyun Aktif mi?) is (Evet)
+      :Kullanıcı Girdisini İşle;
+      
+      if (Dokunma/Klavye Input?) then (Evet)
+        :Hareket Komutunu İlet;
+      else (Hayır)
+      endif
+      
+      :Fizik Hesaplamaları Yap;
+      :Çarpışma Kontrolü;
+      
+      if (Engel Çarpışması?) then (Evet)
+        :Karakter Etkileşimi;
+        if (Ana Karakter Öldü mü?) then (Evet)
+          #red:**Oyun Kaybı**;
+          break
+        else (Hayır)
+          :Takipçi Azalt;
+        endif
+      endif
+      
+      if (Geçit Etkileşimi?) then (Evet)
+        :Matematik Hesaplaması Yap;
+        :Takipçi Sayısını Güncelle;
+      endif
+      
+      if (Toplanabilir Alındı mı?) then (Evet)
+        :Skoru Güncelle;
+        :Efektleri Oynat;
+      endif
+      
+      if (Seviye Tamamlandı mı?) then (Evet)
+        #green:**Seviye Başarısı**;
+        break
+      endif
+    endwhile
+    
+    if (Oyun Kaybı mı?) then (Evet)
+      :Yeniden Dene Ekranı;
+    else (Hayır)
+      :Başarı Ekranı;
+      :Skoru Kaydet;
+    endif
+    
+  elseif (Ayarlar Seçildi?) then (Evet)
+    :Ayarlar Menüsünü Aç;
+    :Kullanıcı Tercihlerini Yükle;
+    :Ayarları Uygula;
+  elseif (Çıkış Seçildi?) then (Evet)
+    :Oyunu Kapat;
+    stop
+  endif
+repeat while (Kullanıcı Çıkmadı?)
+
+stop
+
+@enduml

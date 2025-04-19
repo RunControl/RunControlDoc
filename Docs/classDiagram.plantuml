@@ -1,0 +1,181 @@
+@startuml RunControl_ProfesyonelSinifDiyagrami
+title RunControl Unity Sınıf Diyagramı
+
+skinparam {
+  ClassBackgroundColor #F9F9F9
+  ClassBorderColor #333333
+  ArrowColor #444444
+  NoteBackgroundColor #FFFFCC
+  NoteBorderColor #FFAA00
+}
+
+'### ÇEKİRDEK SİSTEMLER ###
+class OyunYoneticisi <<Singleton>> {
+  {static} +OyunYoneticisi Ornek
+  +OyunDurumu MevcutDurum
+  +int MevcutSeviyeIndeksi
+  +void SahneYukle(string sahneAdi)
+  +void OyunuDurdur(bool durdur)
+  +event OyunDurumuDegisti
+  +UnityEvent SeviyeTamamlandi
+  --
+  -void Baslat()
+  -void IlerlemeyiKaydet()
+}
+
+class SeviyeYoneticisi {
+  +SeviyeVerisi[] TumSeviyeler
+  +Seviye MevcutSeviye
+  +void SeviyeYukle(int indeks)
+  +void ProsedurelSeviyeOlustur(SeviyeAyari ayar)
+  +void MevcutSeviyeyiTemizle()
+  --
+  -SeviyeParser seviyeParser
+}
+
+class SkorYoneticisi <<Singleton>> {
+  +int ToplamSkor
+  +int EnYuksekSkor
+  +int MevcutCarpan
+  +void SkorEkle(int puan)
+  +void CarpaniSifirla()
+  +void EnYuksekSkoruKaydet()
+  --
+  -const string EN_YUKSEK_SKOR_ANAHTARI = "eys"
+}
+
+'### OYUNCU SİSTEMİ ###
+class OyuncuKontrolu <<MonoBehaviour>> {
+  +KarakterAyarlari Ayarlar
+  +Transform Lider
+  +TakipciHavuzu TakipciHavuzu
+  +float HareketHizi
+  +void HareketEt(Vector2 yon)
+  +void FormasyonUygula(FormasyonTipi tip)
+  +void EsyaTopla(IToplanabilir esya)
+  --
+  -List<Takipci> aktifTakipciler
+  -void CarpismaKontrolu()
+}
+
+class Karakter <<Abstract>> {
+  {abstract} +void Baslat()
+  +void HasarAl(float miktar)
+  +void Ol()
+  +void AnimasyonOynat(string tetikleyici)
+  --
+  #Animator animator
+  #KarakterIstatistikleri istatistikler
+}
+
+class Lider <<Karakter>> {
+  +float SakinmaSansi
+  +void SakinmaHareketiYap()
+  +override void Baslat()
+}
+
+class Takipci <<Karakter>> {
+  +int FormasyonPozisyonu
+  +void TakipEt(Transform hedef)
+  +override void Baslat()
+}
+
+'### OYUN NESNELERİ ###
+class Engel <<ScriptableObject>> {
+  +EngelTipi Tip
+  +Sprite Goruntu
+  +float EtkiDegeri
+  +AudioClip CarpmaSesi
+  +void EtkiUygula(Karakter hedef)
+}
+
+class Gecit {
+  +MatematikIslemi Islem
+  +int GerekliSayi
+  +ParticleSystem Efekt
+  +void OyuncuyuIsle(OyuncuKontrolu oyuncu)
+}
+
+interface IToplanabilir {
+  +void Topla(OyuncuKontrolu oyuncu)
+}
+
+class Toplanabilir <<IToplanabilir>> {
+  +ToplanabilirTipi Tip
+  +int Deger
+  +ParticleSystem ToplamaEfekti
+  +void Topla(OyuncuKontrolu oyuncu)
+}
+
+'### VERİ YAPILARI ###
+enum OyunDurumu {
+  MENU
+  OYUN_ICI
+  DURDURULDU
+  OYUN_BITTI
+  SEVIYE_TAMAMLANDI
+}
+
+enum EngelTipi {
+  ANI_OLUM
+  HIZ_DUSURUCU
+  TAKIPCI_SILICI
+}
+
+enum MatematikIslemi {
+  TOPLAMA
+  CIKARMA
+  CARPMA
+  BOLME
+}
+
+enum ToplanabilirTipi {
+  SKOR_ARTTIRICI
+  TAKIPCI_ODULU
+  GECICI_ZIRH
+}
+
+'### İLİŞKİLER ###
+OyunYoneticisi "1" *-- "1" SeviyeYoneticisi
+OyunYoneticisi "1" *-- "1" SkorYoneticisi
+OyunYoneticisi --> OyunDurumu : kullanır
+
+SeviyeYoneticisi "1" *-- "1..*" SeviyeVerisi
+SeviyeYoneticisi --> Engel : oluşturur
+SeviyeYoneticisi --> Gecit : oluşturur
+SeviyeYoneticisi --> Toplanabilir : oluşturur
+
+OyuncuKontrolu "1" *-- "1" Lider
+OyuncuKontrolu "1" *-- "0..*" Takipci
+OyuncuKontrolu --> IToplanabilir : toplar
+OyuncuKontrolu --|> MonoBehaviour
+
+Karakter <|-- Lider
+Karakter <|-- Takipci
+Karakter --> Engel : etkilenir
+
+Gecit --> OyuncuKontrolu : işler
+Gecit --> MatematikIslemi : kullanır
+
+Engel --|> ScriptableObject
+Toplanabilir --|> ScriptableObject
+Toplanabilir ..|> IToplanabilir
+
+note top of OyunYoneticisi 
+  Oyun durum makinesini yönetir,
+  sahne geçişlerini kontrol eder ve
+  merkezi haberleşme sağlar
+end note
+
+note right of SeviyeYoneticisi
+  Nesne havuzlama kullanarak
+  verimli seviye yükleme ve
+  temizleme işlemleri yapar
+end note
+
+note left of OyuncuKontrolu
+  Girdi işleme, hareket fizikleri ve
+  takipçi yönetimini içerir
+end note
+
+@enduml

@@ -1,0 +1,182 @@
+@startuml RunControl_ProfessionalClassDiagram
+title RunControl Unity Class Diagram
+
+skinparam {
+  ClassBackgroundColor #F9F9F9
+  ClassBorderColor #333333
+  ArrowColor #444444
+  NoteBackgroundColor #FFFFCC
+  NoteBorderColor #FFAA00
+}
+
+'### CORE SYSTEMS ###
+class GameManager <<Singleton>> {
+  {static} +GameManager Instance
+  +GameState CurrentState
+  +int CurrentLevelIndex
+  +void LoadScene(string sceneName)
+  +void PauseGame(bool pause)
+  +event OnGameStateChanged
+  +UnityEvent OnLevelCompleted
+  --
+  -void Initialize()
+  -void SaveProgress()
+}
+
+class LevelManager {
+  +LevelData[] AllLevels
+  +Level CurrentLevel
+  +void LoadLevel(int index)
+  +void GenerateProceduralLevel(LevelConfig config)
+  +void CleanCurrentLevel()
+  --
+  -LevelParser levelParser
+}
+
+class ScoreManager <<Singleton>> {
+  +int TotalScore
+  +int HighScore
+  +int CurrentMultiplier
+  +void AddScore(int points)
+  +void ResetMultiplier()
+  +void SaveHighScore()
+  --
+  -const string HIGH_SCORE_KEY = "hs"
+}
+
+'### PLAYER SYSTEM ###
+class PlayerController <<MonoBehaviour>> {
+  +CharacterSettings Settings
+  +Transform Leader
+  +FollowerPool FollowerPool
+  +float MoveSpeed
+  +void Move(Vector2 direction)
+  +void ApplyFormation(FormationType type)
+  +void CollectItem(ICollectable item)
+  --
+  -List<Follower> activeFollowers
+  -void HandleCollision()
+}
+
+class Character <<Abstract>> {
+  {abstract} +void Initialize()
+  +void TakeDamage(float amount)
+  +void Die()
+  +void PlayAnimation(string trigger)
+  --
+  #Animator animator
+  #CharacterStats stats
+}
+
+class Leader <<Character>> {
+  +float DodgeChance
+  +void PerformDodge()
+  +override void Initialize()
+}
+
+class Follower <<Character>> {
+  +int FormationPosition
+  +void Follow(Transform target)
+  +override void Initialize()
+}
+
+'### GAME OBJECTS ###
+class Obstacle <<ScriptableObject>> {
+  +ObstacleType Type
+  +Sprite Visual
+  +float EffectValue
+  +AudioClip HitSound
+  +void ApplyEffect(Character target)
+}
+
+class Gate {
+  +MathOperation Operation
+  +int RequiredCount
+  +ParticleSystem Effect
+  +void ProcessPlayers(PlayerController player)
+}
+
+interface ICollectable {
+  +void Collect(PlayerController player)
+}
+
+class Collectible <<ICollectable>> {
+  +CollectibleType Type
+  +int Value
+  +ParticleSystem CollectEffect
+  +void Collect(PlayerController player)
+}
+
+'### DATA STRUCTURES ###
+enum GameState {
+  MENU
+  PLAYING
+  PAUSED
+  GAME_OVER
+  LEVEL_COMPLETE
+}
+
+enum ObstacleType {
+  INSTANT_DEATH
+  SPEED_REDUCER
+  FOLLOWER_REMOVER
+}
+
+enum MathOperation {
+  ADD
+  SUBTRACT
+  MULTIPLY
+  DIVIDE
+}
+
+enum CollectibleType {
+  SCORE_BOOST
+  FOLLOWER_BONUS
+  TEMP_INVINCIBILITY
+}
+
+'### RELATIONSHIPS ###
+GameManager "1" *-- "1" LevelManager
+GameManager "1" *-- "1" ScoreManager
+GameManager --> GameState : uses
+
+LevelManager "1" *-- "1..*" LevelData
+LevelManager --> Obstacle : creates
+LevelManager --> Gate : creates
+LevelManager --> Collectible : creates
+
+PlayerController "1" *-- "1" Leader
+PlayerController "1" *-- "0..*" Follower
+PlayerController --> ICollectable : collects
+PlayerController --|> MonoBehaviour
+
+Character <|-- Leader
+Character <|-- Follower
+Character --> Obstacle : affected by
+
+Gate --> PlayerController : processes
+Gate --> MathOperation : uses
+
+Obstacle --|> ScriptableObject
+Collectible --|> ScriptableObject
+Collectible ..|> ICollectable
+
+note top of GameManager 
+  Handles game state machine,
+  scene management and
+  acts as central hub
+end note
+
+note right of LevelManager
+  Uses object pooling for
+  efficient level loading
+  and cleanup
+end note
+
+note left of PlayerController
+  Implements input handling,
+  movement physics and
+  follower management
+end note
+
+@enduml

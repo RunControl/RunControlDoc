@@ -1,0 +1,43 @@
+@startuml RunControl_EkranAkisDiyagrami
+title RunControl Ekran Akış Diyagramı
+
+skinparam {
+  defaultFontName Arial
+  ArrowColor #005577
+  BackgroundColor #FDFDFD
+  RectangleBackgroundColor #E0F7FA
+  RectangleBorderColor #00796B
+  FontSize 12
+}
+
+rectangle "Splash Screen\n(Sahne: Splash)" as splash
+rectangle "Ana Menü\n(Sahne: MainMenu)" as mainmenu
+rectangle "Ayarlar Menüsü\n(Popup)" as settings
+rectangle "Seviye Seçim Ekranı\n(Sahne: LevelSelect)" as levelselect
+rectangle "Oyun Sahnesi\n(Sahne: GamePlay)" as gameplay
+rectangle "Oyun Bitti\n(Popup)" as gameover
+rectangle "Seviye Başarı\n(Popup)" as success
+rectangle "Yeniden Dene\n(Popup)" as retry
+rectangle "Mağaza\n(Popup)" as shop
+
+' Ekran geçişleri
+splash --> mainmenu : Otomatik geçiş (delay)
+mainmenu --> settings : Ayarlar butonu
+mainmenu --> levelselect : Play butonu
+mainmenu --> shop : Mağaza butonu
+
+levelselect --> gameplay : Seviye seçimi -> Oyun
+
+gameplay --> gameover : Ana karakter öldü
+gameplay --> success : Seviye tamamlandı
+
+gameover --> retry : Yeniden dene
+retry --> gameplay : Seviye yeniden başlatılır
+
+success --> levelselect : Sonraki seviye
+success --> mainmenu : Menüye dön
+
+settings --> mainmenu : Geri butonu
+shop --> mainmenu : Geri butonu
+
+@enduml

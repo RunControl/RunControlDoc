@@ -1,0 +1,90 @@
+@startuml RunControl_SequenceDiagram
+title RunControl Profesyonel Sıralama Diyagramı
+
+skinparam {
+  ParticipantBackgroundColor #F7F7F7
+  ParticipantBorderColor #333333
+  ActorBackgroundColor #E6F3FF
+  ActorBorderColor #003366
+  ArrowColor #444444
+  LifeLineBackgroundColor #FFFFFF
+  NoteBackgroundColor #FFFFCC
+}
+
+actor "Oyuncu" as Player
+participant "UI Manager" as UI
+participant "GameManager" as GM
+participant "InputSystem" as Input
+participant "PlayerController" as PC
+participant "PhysicsEngine" as Physics
+participant "LevelManager" as LM
+participant "ScoreSystem" as Score
+participant "AdManager" as Ads
+
+autonumber "<b>[00]"
+
+Player -> Input: Dokunma/Klavye Girdisi
+activate Input
+Input -> PC: Hareket Bilgisi (Vector2)
+activate PC
+
+PC -> Physics: Hareket Sorgula
+activate Physics
+Physics --> PC: Geçerli Pozisyon
+deactivate Physics
+
+PC -> LM: Konum Güncellemesi
+activate LM
+LM --> PC: Engel Kontrolü
+deactivate LM
+
+alt Engel Yoksa
+    PC -> Physics: Yeni Pozisyon Uygula
+    activate Physics
+    Physics --> PC: Onay
+    deactivate Physics
+    
+    PC -> GM: Başarılı Hareket
+    activate GM
+    GM -> Score: Mesafe Puanı Ekle
+    activate Score
+    Score --> GM: Toplam Puan
+    deactivate Score
+    deactivate GM
+else Engel Var
+    PC -> GM: Engel Çarpışması
+    activate GM
+    GM -> PC: Hasar Uygula
+    GM -> UI: Can Güncellemesi
+    activate UI
+    UI --> GM: Onay
+    deactivate UI
+    
+    alt Ana Karakter Öldüyse
+        GM -> UI: GameOver Ekranı
+        activate UI
+        UI -> Ads: Reklam Gösterimi İste
+        activate Ads
+        Ads --> UI: Reklam Tamamlandı
+        deactivate Ads
+        UI --> GM: Onay
+        deactivate UI
+    end
+    deactivate GM
+end
+
+PC -> UI: Pozisyon Güncellemesi
+activate UI
+UI --> PC: Onay
+deactivate UI
+
+deactivate PC
+deactivate Input
+
+autonumber stop
+
+note right of Physics: **Fizik Motoru**\n- Rigidbody2D kullanır\n- Collision matrix optimize edilmiş
+note left of Score: **Skor Sistemi**\n- Combo çarpanı\n- Zaman bonusu\n- Lider tablosu entegrasyonu
+note over Ads: Harici Servisler:\n- Unity Ads\n- AdMob\n- IronSource
+
+@enduml

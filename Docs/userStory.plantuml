@@ -1,0 +1,78 @@
+@startuml RunControl_User_Stories
+title RunControl User Story Diagramı
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam usecaseBackgroundColor #F8F9FA
+skinparam usecaseBorderColor #495057
+
+actor Player as "Oyuncu"
+rectangle "Oyun Sistemleri" {
+    usecase "US1: Engelli Parkurda Koş" as US1
+    usecase "US2: Matematik Geçitlerinden Geç" as US2
+    usecase "US3: Takipçi Sayısını Artır" as US3
+    usecase "US4: Engel Gruplarından Kaçın" as US4
+    usecase "US5: Özel Karakterler Aç" as US5
+    usecase "US6: Takipçi Formasyonunu Yönet" as US6
+    usecase "US7: Hız Artırıcıları Topla" as US7
+    usecase "US8: Özel Yetenekleri Kullan" as US8
+    usecase "US9: Seviye Hedeflerini Tamamla" as US9
+    usecase "US10: Görünümü Özelleştir" as US10
+}
+
+Player --> US1 : "Karakteri parkurda\nyönlendirir"
+Player --> US2 : "Doğru hesaplamalar\nyaparak geçer"
+Player --> US3 : "Geçitlerden geçerek\ntakipçi kazanır"
+Player --> US4 : "Engel gruplarını\naşar"
+Player --> US5 : "Yeni karakterler\nkilitler"
+Player --> US6 : "Takipçi dizilimini\ndeğiştirir"
+Player --> US7 : "Hız artırıcıları\ntoplayarak avantaj sağlar"
+Player --> US8 : "Özel yetenekleri\naktif eder"
+Player --> US9 : "Seviye hedeflerine\nulaşır"
+Player --> US10 : "Karakter görünümünü\nkişiselleştirir"
+
+US1 .> US4 : extends
+US2 .> US3 : includes
+US3 .> US10 : extends
+US4 .> US8 : includes
+US5 .> US6 : includes
+US9 .> US3 : depends on
+
+rectangle "Teknik Gereksinimler" {
+    usecase "TG1: Prosedürel Parkur Üretimi" as TG1
+    usecase "TG2: Dinamik Zorluk Ayarlama" as TG2
+    usecase "TG3: Takipçi Yönetim Sistemi" as TG3
+    usecase "TG4: Gerçek Zamanlı Hesaplama Motoru" as TG4
+    usecase "TG5: Mobil Performans Optimizasyonu" as TG5
+}
+
+US1 .> TG1 : requires
+US2 .> TG4 : requires
+US3 .> TG3 : requires
+US6 .> TG2 : requires
+US1 .> TG5 : requires
+
+note right of US2
+**Matematik Geçitleri:**
+- Toplama/Çıkarma
+- Çarpma/Bölme
+- Rastgele denklemler
+end note
+
+note bottom of TG5
+**Optimizasyonlar:**
+- Nesne havuzlama
+- DOTS fizik
+- GPU Instancing
+- Texture Streaming
+end note
+
+legend top right
+|<#F8F9FA> **RunControl Temel Özellikler** |
+| US1-4: Çekirdek oyun mekanikleri |
+| US5-8: İlerleme sistemleri |
+| US9-10: Kişiselleştirme |
+endlegend
+
+@enduml

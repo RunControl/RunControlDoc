@@ -1,0 +1,65 @@
+@startuml RunControl_SWOT_Analysis
+title RunControl SWOT Analizi
+
+skinparam {
+  defaultFontName Arial
+  shadowing false
+  BackgroundColor #F9F9F9
+  ArrowColor #333333
+}
+
+rectangle "**GÜÇLÜ YÖNLER** (Strengths)" #C8E6C9 {
+  card "**S1**\nBasit ama bağımlılık yapan oyun mekaniği" as S1
+  card "**S2**\nMatematiksel öğelerle eğitici yön" as S2
+  card "**S3**\nDüşük sistem gereksinimleri" as S3
+  card "**S4**\nHızlı öğrenme eğrisi" as S4
+}
+
+rectangle "**ZAYIF YÖNLER** (Weaknesses)" #FFCDD2 {
+  card "**W1**\nSınırlı oyun çeşitliliği" as W1
+  card "**W2**\nİçerik üretiminin tekrarlı yapısı" as W2
+  card "**W3**\nMarka bilinirliği eksikliği" as W3
+  card "**W4**\nMonetizasyon kısıtları" as W4
+}
+
+rectangle "**FIRSATLAR** (Opportunities)" #BBDEFB {
+  card "**O1**\nEğitim odaklı oyun pazarı büyümesi" as O1
+  card "**O2**\nOkul dönemlerinde viral pazarlama" as O2
+  card "**O3**\nMini oyun ekosistemi oluşturma" as O3
+  card "**O4**\nYerel sponsorluk anlaşmaları" as O4
+}
+
+rectangle "**TEHDİTLER** (Threats)" #FFF9C4 {
+  card "**T1**\nRekabetçi hyper-casual pazar" as T1
+  card "**T2**\nReklam maliyetlerinin artması" as T2
+  card "**T3**\nPlatform algoritma değişiklikleri" as T3
+  card "**T4**\nKopya oyun riski" as T4
+}
+
+' STRATEJİK BAĞLANTILAR
+S1 -[hidden]-> O3 : "Mekanik genişletme"
+S2 -[hidden]-> O1 : "Eğitim pazarı"
+W1 -[hidden]-> O3 : "Mini oyunlar"
+W4 -[hidden]-> O4 : "Sponsorluk"
+T1 -[hidden]-> S1 : "Farklılaştırıcı özellik"
+
+note right of S1
+  **Kritik Üstünlük:**
+  - 3 sn'de öğrenilebilirlik
+  - 60+ dakika oyun süresi
+end note
+
+note left of T1
+  **Pazar Verisi:**
+  - Günlük 500+ hyper-casual lansman
+  - CPI: $0.20-$0.85
+end note
+
+legend bottom
+|<#E3F2FD> **ANAHTAR ÇIKARIMLAR** |
+| ► Matematik + Oyun = Yenilikçi füzyon |
+| ► Eğitim sektörüyle işbirlikleri fırsatı |
+| ► Reklam optimizasyonu kritik önemde |
+endlegend
+
+@enduml

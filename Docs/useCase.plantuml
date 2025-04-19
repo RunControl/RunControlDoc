@@ -1,0 +1,118 @@
+@startuml RunControl_UseCase_Optimized
+title RunControl Use Case Diagramı
+
+skinparam monochrome false
+skinparam usecase {
+    BackgroundColor #F8F9FA
+    BorderColor #495057
+    FontName Arial
+    FontSize 14
+    FontStyle bold
+    ArrowColor #343A40
+}
+skinparam actor {
+    BackgroundColor #BBDEFB
+    BorderColor #2196F3
+    FontColor #0A2463
+    FontSize 15
+}
+
+' ====== AKTÖRLER ======
+actor Player as "🎮 OYUNCU (Mobil)"
+actor AdProvider as "📈 REKLAM AĞI (Unity Ads)"
+actor Backend as "⚙️ BULUT SİSTEM (PlayFab)"
+actor Analytics as "📊 ANALİTİK (Firebase)"
+
+' ====== ÇEKİRDEK OYUN MEKANİKLERİ ======
+rectangle "TEMEL OYUN" #FFF3E0 {
+    (Oyunu Başlat) as UC1
+    (Seviye Tamamla) as UC2
+    (Engelde Kaybet) as UC3
+    (Takipçi Sayısını Artır) as UC4
+    (Hız Artırıcı Kullan) as UC5
+
+    UC1 .> (Varlıkları Yükle) : <<include>>\n<#Addressables>
+    UC2 .> (Ödül Hesapla) : <<include>>\n<#ScriptableObjects>
+    UC3 .> (Yeniden Dene Göster) : <<extend>>\n<#AdCall>
+}
+
+' ====== İLERLEME SİSTEMİ ======
+rectangle "İLERLEME" #E8F5E9 {
+    (Yeni Karakter Aç) as UC6
+    (Kıyafet Satın Al) as UC7
+    (Günlük Ödül Al) as UC8
+    (Cihazlar Arası Senkronize Et) as UC9
+
+    UC7 <.. IAP : <<trigger>>\n<#UnityPurchasing>
+    UC9 <.. Backend : <<cloud>>\n<#Encrypted>
+}
+
+' ====== TEKNİK SİSTEMLER ======
+rectangle "TEKNİK YÖNETİM" #E3F2FD {
+    (Düşük Belleği Yönet) as UC10
+    (Cihaz Dönüşünü Ayarla) as UC11
+    (Hata Raporla) as UC12
+    (Pil Tüketimini Optimize Et) as UC13
+
+    UC12 ..> Analytics : <<automated>>\n<#Crashlytics>
+}
+
+' ====== MONETİZASYON ======
+rectangle "GELİR MODELİ" #FFEBEE {
+    (Ödüllü Reklam İzle) as UC14
+    (Uygulama İçi Satın Al) as UC15
+    (Abonelik Al) as UC16
+
+    UC14 <.. AdProvider : <<network>>\n<#Waterfall>
+    UC15 <.. IAP : <<validation>>\n<#Receipt>
+}
+
+' ====== İLİŞKİLER ======
+Player --> UC1 : "Oyna'ya Basar\n<100ms yanıt>"
+Player --> UC4 : "Geçitlerden Geçer"
+Player --> UC14 : "Takipçi Kazanır"
+
+Backend --> UC9 : "Senkronize Eder\n<JSON>"
+Analytics --> UC12 : "Veri Toplar\n<BigQuery>"
+
+' ====== NOTLAR ======
+note top of UC1
+    **Teknik Akış**:
+    1. Addressables.LoadAsync()
+    2. NesneHavuzu.ÖnYükleme()
+    3. KayıtSistemi.Başlat()
+    RAM: <120MB hedef
+end note
+
+note right of UC10
+    **Bellek Yönetimi**:
+    - Kullanılmayan assetleri boşalt
+    - Texture quality ayarla
+    - Partikülleri temizle
+    Eşik: %80 kullanım
+end note
+
+' ====== TEKNİK ALTYAPI NOTU ======
+note as TS
+== Teknik Yığın ==
+• Unity 2022 LTS
+• New Input System
+• Addressables 1.19+
+• URP 12.1
+• DOTween Pro
+• Odin Inspector
+end note
+
+UC10 .. TS
+
+' ====== PERFORMANS METRİKLERİ ======
+legend bottom
+|<#E3F2FD> **PERFORMANS GÖSTERGELERİ** |
+• Giriş Gecikmesi: <100ms |
+• Yükleme Süresi: <2s soğuk |
+• FPS: 60 (min 45) |
+• Çökmeler: <%0.3 oturum |
+• ANR Oranı: <%0.05 |
+endlegend
+
+@enduml

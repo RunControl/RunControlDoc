@@ -1,0 +1,106 @@
+@startuml RunControl_System_Architecture_Optimized
+title RunControl Sistem Mimarisi Diagramı
+
+skinparam nodesep 40
+skinparam ranksep 50
+skinparam shadowing false
+skinparam monochrome false
+skinparam classFontColor #333333
+
+package "**Çekirdek Sistemler**" #F5F5F5 {
+    [OyunYöneticisi] <<Singleton>>
+    [SeviyeYükleyici] <<Addressables>>
+    [NesneHavuzu] <<ObjectPooling>>
+    [SesYöneticisi] <<FMOD>>
+}
+
+package "**Oyun Mekaniği**" #E6F3FF {
+    [GirdiSistemi] <<InputSystem>>
+    [KoşucuKontrol] <<CharacterController>>
+    [TakipçiYönetimi]
+    
+    [EngelSistemi]
+    [MatematikMotoru] <<ScriptableObject>>
+    [HızModifikatörü]
+    
+    [AIYöneticisi]
+    [SıraÜretici] <<Coroutine>>
+    [YolBulma] <<NavMesh>>
+}
+
+package "**Ortam Sistemleri**" #E6FFE6 {
+    [ParkurÜretici] <<PCG>>
+    [FizikMotoru] <<DOTS>>
+    [EfektYöneticisi] <<VFXGraph>>
+    [ZamanDöngüsü] <<Shader>>
+}
+
+package "**Arayüz Sistemi**" #FFE6E6 {
+    [ArayüzYöneticisi] <<UGUI>>
+    [GerçekZamanlıUI]
+    [MenüSistemi]
+    [Bildirimler] <<TextMeshPro>>
+}
+
+package "**Servisler**" #F0E6FF {
+    [Analiz] <<Firebase>>
+    [BulutKayıt] <<PlayFab>>
+    [IAPYöneticisi] <<UnityPurchasing>>
+    [ReklamSistemi] <<UnityAds>>
+}
+
+' ===================== BAĞLANTILAR =====================
+
+[OyunYöneticisi] --> [GirdiSistemi] : "Oyun Durumu"
+[OyunYöneticisi] --> [SıraÜretici] : "Seviye Başlat"
+[OyunYöneticisi] --> [ArayüzYöneticisi] : "Olaylar"
+[OyunYöneticisi] --> [SeviyeYükleyici] : "Seviyeleri Yükle"
+[BulutKayıt] --> [OyunYöneticisi] : "İlerleme Yönetimi"
+
+[GirdiSistemi] --> [KoşucuKontrol]
+[KoşucuKontrol] --> [TakipçiYönetimi]
+
+[EngelSistemi] --> [MatematikMotoru]
+[MatematikMotoru] --> [TakipçiYönetimi] : "Sayı Hesapla"
+[HızModifikatörü] --> [KoşucuKontrol]
+
+[ParkurÜretici] --> [FizikMotoru] : "Collider Ayarları"
+[FizikMotoru] --> [EngelSistemi] : "Çarpışma Tespiti"
+
+[ArayüzYöneticisi] --> [Analiz]
+[ArayüzYöneticisi] --> [ReklamSistemi]
+[ArayüzYöneticisi] --> [OyunYöneticisi] : "UI Etkileşimleri"
+
+[IAPYöneticisi] --> [TakipçiYönetimi] : "Özel Karakterler"
+
+' ===================== NOTLAR =====================
+
+note right of [NesneHavuzu]
+**Performans Optimizasyonu**
+- Önceden yüklenmiş nesneler
+- Dinamik havuz genişletme
+- Otomatik geri dönüşüm
+end note
+
+note right of [FizikMotoru]
+**DOTS Entegrasyonu**
+- Burst derlemesi
+- Paralel işleme
+- Optimize çarpışmalar
+end note
+
+note left of [AIYöneticisi]
+**Takipçi Davranışları**
+- Basit durum makinesi
+- Formasyon yönetimi
+- Engel kaçınma
+end note
+
+note bottom of [MatematikMotoru]
+**Dinamik Hesaplamalar**
+- Gerçek zamanlı sayı değişimi
+- Zorluk skalası
+- Rastgele denklem üretimi
+end note
+
+@enduml

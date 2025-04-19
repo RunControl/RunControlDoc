@@ -1,0 +1,85 @@
+@startuml RunControl_AktiviteDiyagrami_V2
+
+title RunControl Oyun Akış Diyagramı
+skinparam backgroundColor #EEEBDC
+skinparam activity {
+  BackgroundColor #F7F7F7
+  BorderColor #333333
+  FontName Arial
+}
+
+start
+
+:Oyun Başlatıldı;
+note right: Uygulama açılır ve ilk sahne yüklenir
+
+if (İlk açılış mı?) then (Evet)
+  :Eğitim Seviyesini Yükle;
+else (Hayır)
+endif
+
+:Ana Menüyü Göster;
+
+repeat
+  :Kullanıcı Girişini Bekle;
+  
+  if (Play'e Basıldı mı?) then (Evet)
+    repeat
+      :Seviye Verilerini Hazırla;
+      :Ortamı Oluştur;
+      :Karakterleri Spawn Et;
+      :Skor Sistemini Sıfırla;
+      
+      while (Seviye Devam Ediyor mu?) is (Evet)
+        :Oyuncu Girdisini İşle;
+        
+        if (Dokunma Algılandı mı?) then (Evet)
+          :Hareket Komutu Gönder;
+        endif
+
+        :Fizik Hesaplamalarını Yap;
+        :Çarpışma Kontrolü Yap;
+
+        if (Engel ile çarpışma?) then (Evet)
+          :Karakter Kaybı İşle;
+          if (Ana Karakter Öldü mü?) then (Evet)
+            :Oyun Kaybı;
+            break
+          endif
+        endif
+
+        if (Geçit ile etkileşim?) then (Evet)
+          :Matematiksel Hesaplamayı Yap;
+          :Takipçi Sayısını Güncelle;
+        endif
+
+        if (Toplanabilir ile etkileşim?) then (Evet)
+          :Ödülü Uygula;
+          :Skoru Güncelle;
+        endif
+
+        if (Seviye Tamamlandı mı?) then (Evet)
+          :Seviye Başarısı;
+          break
+        endif
+      endwhile
+
+      if (Oyun Kaybı mı?) then (Evet)
+        :Yeniden Dene Ekranını Göster;
+      else (Hayır)
+        :Başarı Ekranını Göster;
+      endif
+
+      :Sonraki Seviyeye Hazırlan;
+    repeat while (Sonraki Seviye Var mı?) is (Evet)
+  elseif (Ayarlar'a Basıldı mı?) then (Evet)
+    :Ayarlar Menüsünü Göster;
+  elseif (Çıkış'a Basıldı mı?) then (Evet)
+    :Oyunu Kapat;
+    stop
+  endif
+repeat while (Kullanıcı Çıkış Yapmadı?) is (Evet)
+
+stop
+
+@enduml

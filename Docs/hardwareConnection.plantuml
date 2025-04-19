@@ -1,0 +1,90 @@
+@startuml RunControl_DonanımBağlantıDiyagramı
+title RunControl Donanım Bağlantı Diyagramı
+
+skinparam {
+  defaultFontName Arial
+  arrowColor #003366
+  actorBackgroundColor #F5F5F5
+  componentBackgroundColor #E6F3FF
+  databaseBackgroundColor #FFE6E6
+  rectangleBackgroundColor #F0F0F0
+}
+
+actor "**Oyuncu**" as user
+actor "**Yönetici**" as admin
+
+rectangle "**Oyun İstemcisi**" as client {
+  component "**Unity Uygulaması**" as unity {
+    component "**Girdi Sistemi**" as input
+    component "**Fizik Motoru**" as physics
+    component "**Ağ Yöneticisi**" as network
+  }
+
+  rectangle "**Yerel Veriler**" as localdata {
+    component "PlayerPrefs" as prefs
+    component "Kaydedilmiş Oyunlar" as saves
+  }
+}
+
+rectangle "**Sunucu Taraflı**" as server {
+  database "**Veritabanı**" as db
+  component "**API Gateway**" as api {
+    component "Kimlik Doğrulama" as auth
+    component "Veri Senkronizasyonu" as sync
+  }
+}
+
+rectangle "**Harici Servisler**" as external {
+  component "**Ödeme Sistemi**" as payment
+  component "**Analiz Platformu**" as analytics
+  component "**Reklam Ağı**" as ads
+}
+
+
+user --> input : "Dokunma/Klavye/Mouse\nGirdileri"
+input --> physics : "Hareket Verisi"
+physics --> network : "Durum Güncellemeleri"
+
+unity --> prefs : "Veri Kaydet"
+unity --> saves : "Oyun Kaydı"
+prefs --> unity : "Okuma"
+saves --> unity : "Yükleme"
+
+network <--> api : "REST/WebSocket\n(Güvenli HTTPS)"
+api --> db : "Veri İşlemleri"
+db --> api : "Sorgu Sonuçları"
+
+admin --> db : "Veri Yönetimi"
+
+unity --> external : "Harici Entegrasyonlar"
+external --> unity : "Geribildirimler"
+
+payment --> api : "Ödeme Onayı"
+analytics --> api : "İstatistik Akışı"
+ads --> unity : "Reklam Döngüsü"
+
+note right of input
+  **Girdi Kaynakları:**
+  - Dokunmatik Ekran
+  - Klavye/Mouse (PC)
+  - Gamepad (Konsol)
+  - Akselerometre (Mobil)
+end note
+
+note left of db
+  **Veritabanı Yapısı:**
+  - Firebase Realtime DB
+  - Tablo: kullanici_verileri
+  - Tablo: seviye_istatistikleri
+  - Tablo: global_skorlar
+end note
+
+note bottom of external
+  **Entegre Servisler:**
+  - Unity Ads
+  - Google Analytics
+  - App Store/Play Store IAP
+  - Facebook SDK
+end note
+
+@enduml
