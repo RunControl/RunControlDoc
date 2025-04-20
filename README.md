@@ -32,7 +32,7 @@ Bu depo, RunControl adlı oyunun dokümantasyonu için oluşturulmuştur. RunCon
 
 - [ARC42 Dökümantasyon](https://runcontrol.github.io/RunControlArc42/#section-runtime-view)
 
-  ## Web Site
+## Web Site
 - [L-Group.](https://runcontrol.github.io/RunControlWeb/)
 
 ## Authors
