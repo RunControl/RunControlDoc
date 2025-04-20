@@ -34,7 +34,8 @@ Bu depo, RunControl adlı oyunun dokümantasyonu için oluşturulmuştur. RunCon
 
 ## Web Site
 - [L-Group.](https://runcontrol.github.io/RunControlWeb/)
-
+## Trello
+- [L Group](https://trello.com/b/1aw72usX/l-group)
 ## Authors
 
 - [@mustitrtk](https://github.com/mustitrtk)  Mustafa TORTUK 
