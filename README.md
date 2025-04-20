@@ -68,3 +68,13 @@ RunControl'de AR teknolojisini tercih ederek oyunculara sıradan bir karakter ed
 
 > We implemented AR in RunControl to deliver a next-level personalized experience. Players can now bring their characters into the real world through augmented reality, create fun scenes, and easily share them socially - making character customization more immersive and shareable than ever!
 
+#### Neden dokümantasyonda GDD yerine arc42 kullandınız?
+
+RunControl’de GDD yerine arc42 şablonunu tercih ettik çünkü oyun sadece tasarımsal değil, aynı zamanda yazılım mimarisi açısından da güçlü ve sürdürülebilir bir yapıya sahip olmalıydı. arc42, teknik ekiplerin ihtiyaçlarına daha uygun, modüler ve uzun vadeli bir dokümantasyon yaklaşımı sunar.
+
+> #### Why did you use arc42 instead of GDD for documentation?
+
+> We chose arc42 over GDD in RunControl because the project required not only design documentation but also a strong, maintainable software architecture. arc42 offers a more modular, technically-oriented structure that suits long-term development needs.
+
+
+
