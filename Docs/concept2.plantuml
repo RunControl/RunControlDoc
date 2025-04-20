@@ -1,0 +1,12 @@
+@startuml
+actor Kullanıcı
+entity "Mobil Uygulama" as MobileApp
+entity "Sunucu" as Server
+entity "Veritabanı" as Database
+
+Kullanıcı -> MobileApp : Kimlik doğrulama isteği
+MobileApp -> Server : Şifreli veri ile kimlik doğrulama
+Server -> Database : Şifrelenmiş veri doğrulaması
+Database -> Server : Kimlik doğrulama sonucu
+Server -> MobileApp : Kimlik doğrulama sonucu
+@enduml

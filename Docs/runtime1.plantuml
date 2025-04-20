@@ -1,0 +1,22 @@
+@startuml
+actor "Oyuncu" as Player
+entity "Item Mağazası" as Shop
+entity "Karakter Özelleştirme" as Customization
+entity "Sanal Para Yönetim Sistemi" as CurrencySystem
+entity "Ekipman Envanteri" as Inventory
+
+Player -> Shop : Eşyaları incele
+Shop -> Player : Mevcut eşyaları listele
+Player -> Shop : Sepete ürün ekle
+Shop -> Inventory : Sepete eklenen ürünleri kontrol et
+Player -> CurrencySystem : Satın alma işlemi başlat
+CurrencySystem -> Player : Sanal para bakiyesi kontrolü
+Player -> CurrencySystem : Ödeme yap
+CurrencySystem -> Player : Ödeme başarılı
+Player -> Shop : Satın almayı onayla
+Shop -> Inventory : Satın alınan ürünleri envantere ekle
+Player -> Customization : Eşyaları karaktere giydir
+Customization -> Player : Karakterin görünümünü güncelle
+Customization -> Inventory : Giydirilen eşyaları envantere kaydet
+Player -> Inventory : Envanteri görüntüle
+@enduml

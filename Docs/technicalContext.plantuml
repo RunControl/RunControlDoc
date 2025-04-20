@@ -1,0 +1,54 @@
+@startuml
+' diagram tipini belirtiyoruz: component diyagramı
+
+title RunControl - Technical Context Diagram
+
+actor Oyuncu
+actor SistemYöneticisi
+
+package "RunControl Mobil Uygulaması\n(Unity Engine)" {
+    [Matematik Motoru\n(Toplama / Çıkarma / Çarpma / Bölme)] as MathEngine
+    [Takipçi Simülasyonu\n(DOTS + ECS)] as FollowerSim
+    [UI/UX Sistemi\n(Unity UI Toolkit)] as UIUX
+    [Veri Yönetimi\n(PlayerPrefs + Cache)] as DataLayer
+}
+
+cloud "Firebase" {
+    [Crashlytics\n(Hata Takibi)] as Crashlytics
+    [Firebase Auth\n(Giriş Sistemi)] as FirebaseAuth
+    [Firebase Realtime DB\n(Gelişmiş oyuncu verisi)] as FirebaseDB
+}
+
+cloud "PlayFab" {
+    [Cloud Save\n(Oyun ilerleme kaydı)] as PlayFabSave
+    [Leaderboard & Economy\n(Sıralama, sanal mağaza)] as PlayFabEco
+}
+
+cloud "Unity Services" {
+    [Remote Config\n(Oyun içi değişkenler)] as RemoteConfig
+    [Unity Ads\n(Reklam servisi)] as UnityAds
+    [Unity Analytics\n(Kullanıcı davranışı analizi)] as UnityAnalytics
+}
+
+database "Yerel Cihaz\n(Android/iOS)" as LocalStorage
+
+Oyuncu --> MathEngine : Etkileşim
+Oyuncu --> UIUX : Giriş ve oynanış
+SistemYöneticisi --> FirebaseAuth : Hesap yönetimi
+
+MathEngine --> FollowerSim
+UIUX --> DataLayer
+DataLayer --> LocalStorage
+
+MathEngine --> Crashlytics
+MathEngine --> FirebaseDB
+UIUX --> FirebaseAuth
+
+DataLayer --> PlayFabSave
+DataLayer --> PlayFabEco
+
+MathEngine --> RemoteConfig
+UIUX --> UnityAds
+UIUX --> UnityAnalytics
+
+@enduml

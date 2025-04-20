@@ -1,0 +1,17 @@
+@startuml
+node "Mobil Cihaz" as Mobile {
+  component "RunControl Uygulaması" as App
+}
+
+node "Sunucu" as Server {
+  component "Oyun Sunucusu" as GameServer
+  component "Veritabanı Sunucusu" as DatabaseServer
+}
+
+node "Yük Dengeleyici" as LoadBalancer
+
+Mobile -[#0000FF]> LoadBalancer : Kullanıcı İstekleri
+LoadBalancer -[#0000FF]> GameServer : Oyun Verisi İstekleri
+LoadBalancer -[#0000FF]> DatabaseServer : Veritabanı İstekleri
+GameServer -[#0000FF]> DatabaseServer : Veri Okuma/Yazma
+@enduml

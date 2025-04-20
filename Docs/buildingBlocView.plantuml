@@ -1,0 +1,21 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+System_Boundary(runControl, "RunControl Mobil Uygulaması") {
+
+  Component(simulationEngine, "Simulation Engine", "Unity C#", "Görev akışı, takipçi hareketi ve oyun döngüsünü yönetir")
+  Component(gameManager, "Game Manager", "Unity MonoBehaviour", "Senaryo kontrolü, sahne geçişleri, oyun akışının ana yöneticisi")
+  Component(uiLayer, "UI Layer", "Unity UI Toolkit / Canvas", "Kullanıcı arayüzü bileşenleri (Görev Paneli, Giriş, Ayarlar)")
+  Component(dataLayer, "Data Layer", "ScriptableObject / Local JSON", "Görevler, kullanıcı ilerlemesi ve senaryo bilgileri")
+  Component(analytics, "Analytics Module", "Unity Analytics / Custom", "Kullanıcı davranışlarını izler ve analiz eder")
+
+  Rel(gameManager, simulationEngine, "Oyun akışını tetikler")
+  Rel(gameManager, dataLayer, "Veri okuma/yazma")
+  Rel(uiLayer, gameManager, "Kullanıcı etkileşimlerini yönlendirir")
+  Rel(uiLayer, dataLayer, "Veri gösterimi için")
+  Rel(uiLayer, analytics, "Kullanıcı davranışlarını raporlar")
+}
+
+@enduml

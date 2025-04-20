@@ -1,0 +1,12 @@
+@startuml
+package "RunControl Uygulaması" {
+  [Karakter Yönetimi Modülü]
+  [Oyun Seviyesi Modülü]
+  [Ödül Sistemi Modülü]
+  [Reklam Modülü]
+}
+
+[Karakter Yönetimi Modülü] --> [Oyun Seviyesi Modülü] : Veri gönderimi
+[Oyun Seviyesi Modülü] --> [Ödül Sistemi Modülü] : Ödül gönderimi
+[Reklam Modülü] --> [Ödül Sistemi Modülü] : Bonus ödül
+@enduml

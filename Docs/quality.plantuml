@@ -1,0 +1,18 @@
+@startmindmap
+* Kalite Senaryoları
+** Performans
+*** Kullanıcı Yanıt Süresi
+*** Gecikme < 1 saniye
+** Güvenilirlik
+*** Hata Toleransı
+*** Yedek Sunucu Devreye Girmesi
+** Güvenlik
+*** Veri Şifreleme
+*** Kimlik Doğrulama
+** Reklam Performansı
+*** Reklam Gösterimi < 2 saniye
+*** Veri Akış Süresi
+** AR Deneyimi
+*** AR Karakter Görselleştirme
+*** Karakterin Doğru Konumda Görünmesi
+@endmindmap

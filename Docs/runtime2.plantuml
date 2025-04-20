@@ -1,0 +1,15 @@
+@startuml
+actor "Oyuncu" as Player
+entity "Oyun Seviyeleri" as Levels
+entity "Ödül Sistemi" as Rewards
+entity "Reklam Servisi" as Ads
+
+Player -> Levels : Seviye seç ve başlat
+Levels -> Player : Seviye ilerlemesini göster
+Player -> Levels : Seviyeyi tamamla
+Levels -> Rewards : Ödül tetikle
+Rewards -> Player : Ödül sağla
+Player -> Ads : Bonus için reklam izle
+Ads -> Player : Reklamı göster
+Player -> Rewards : Bonus ödülünü al
+@enduml

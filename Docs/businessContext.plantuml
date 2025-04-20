@@ -1,0 +1,31 @@
+@startuml
+
+title RunControl - Business Context Diagram
+
+actor Oyuncu
+actor Veli
+actor "Eğitim Kurumu" as EgitimKurumu
+actor "Pazarlama Ekibi" as Pazarlama
+actor "Analiz Ekibi" as Analiz
+actor "Teknik Destek" as Destek
+actor "Mobil Mağazalar (App Stores)" as AppStores
+
+rectangle "RunControl Mobil Oyun\n(Unity - Eğitsel Runner)" as RunControl
+
+Oyuncu --> RunControl : Oyun oynar,\nmatematik geçitleri çözer
+Veli --> RunControl : İçeriği kontrol eder,\nbaşarı takibi yapar
+EgitimKurumu --> RunControl : Eğitimsel içerik kullanımı\n(öğrenci katılımı)
+
+RunControl --> AppStores : Yayınlama,\ngüncellemeler
+AppStores --> RunControl : Kullanıcı yorumları,\nmağaza kuralları
+
+Pazarlama --> RunControl : Kampanya içerikleri,\nreklam verisi
+Analiz --> RunControl : Kullanım verisi alır
+RunControl --> Analiz : Performans,\nbaşarı oranı
+
+RunControl --> Destek : Hata ve geri bildirim
+Destek --> RunControl : Sorun çözümü,\nteknik destek
+
+Oyuncu --> Veli : Oyun içi gelişim\npaylaşımı
+
+@enduml

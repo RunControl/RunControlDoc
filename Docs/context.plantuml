@@ -1,0 +1,27 @@
+@startuml RunControl_Context_Diagram
+
+title RunControl - Context Diagram
+
+actor Player
+actor FirebaseAuth
+actor PlayFabCloud
+actor GameAnalytics
+actor DeviceOS
+
+rectangle "RunControl Mobile Game\n(Unity Client)" as RunControl
+
+Player --> RunControl : Oyun oynar\n(Giriş, Etkileşim, Karar Verme)
+RunControl --> Player : Görsel ve haptik geri bildirim,\nprogresyon, skor
+
+RunControl --> FirebaseAuth : Kimlik doğrulama\n(Giriş/Çıkış)
+FirebaseAuth --> RunControl : Auth token,\nKullanıcı ID
+
+RunControl --> PlayFabCloud : Bulut kayıt,\nSkor tablosu, envanter
+PlayFabCloud --> RunControl : Kayıtlı veriler,\nİlerleme durumu
+
+RunControl --> GameAnalytics : Oyun içi etkinlikler,\ncrash log’ları
+GameAnalytics --> RunControl : Rapor ve analiz sonuçları (dolaylı)
+
+RunControl --> DeviceOS : Haptik geri bildirim,\nAğ durumu kontrolü
+
+@enduml
